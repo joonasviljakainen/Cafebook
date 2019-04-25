@@ -6,7 +6,9 @@
 package projekti;
 
 import java.sql.Date;
+import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
@@ -29,6 +31,7 @@ public class Image extends AbstractPersistable<Long> {
     public String description;
     public Date creationDate;
     
-    @Lob()
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
     public byte[] bytes;
 }

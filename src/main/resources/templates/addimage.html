@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <p>Signed in as <span th:text="${username}">nobody</span></p>
+        <p>You have <span th:text="${length}">no</span> image(s).</p>
+        <div>Add an image</div>
+
+        <div>
+            <div th:each="image : ${images}">
+                <img th:src="@{/images/{id}(id=${image.id})}" />
+                <p th:text="${image.description}"></p>
+            </div>
+        </div>
+        <form th:action="@{/images}" method="POST" enctype="multipart/form-data">
+            <input type="file" name="image" />
+            <input type="text" name="description" />
+            <input type="submit" value="Send!"/>
+        </form>
+    </body>
+</html>

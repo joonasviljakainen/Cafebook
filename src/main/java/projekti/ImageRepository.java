@@ -5,6 +5,7 @@
  */
 package projekti;
 
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -12,5 +13,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author joonas
  */
 public interface ImageRepository extends JpaRepository<Image, Long> {
-    public Image findByOwner(Account acc);
+    public List<Image> findByOwner(Account acc);
 }
