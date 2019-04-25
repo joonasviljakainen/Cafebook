@@ -1,6 +1,10 @@
-projekti/MyApplication.class
-projekti/AccountRepository.class
-projekti/Account.class
 projekti/DefaultController.class
 projekti/DevelopmentSecurityConfiguration.class
+projekti/FriendRequest.class
+projekti/ImageRepository.class
 projekti/CustomUserDetailsService.class
+projekti/MyApplication.class
+projekti/Image.class
+projekti/AccountRepository.class
+projekti/Account.class
+projekti/FriendRequestRepository.class

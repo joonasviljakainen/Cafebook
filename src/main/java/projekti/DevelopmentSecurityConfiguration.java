@@ -23,10 +23,15 @@ public class DevelopmentSecurityConfiguration extends WebSecurityConfigurerAdapt
     @Override
     public void configure(HttpSecurity http) throws Exception {
         // Pyyntöjä ei tarkasteta
+        http
+            .csrf().disable();
+        http.headers().frameOptions().disable();
+        
         http.authorizeRequests()
                 .antMatchers("/h2-console", "/h2-console/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/profile").permitAll()
-                .antMatchers(HttpMethod.POST, "/profile/**").hasAnyAuthority("USER");
+                .antMatchers("/register").permitAll();
+                //.antMatchers(HttpMethod.POST, "/profile/**").hasAnyAuthority("USER");
 
         http.formLogin().permitAll();
     }

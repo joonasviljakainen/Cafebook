@@ -14,6 +14,8 @@ import java.util.List;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,15 +28,24 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @NoArgsConstructor
 public class Account extends AbstractPersistable<Long> {
     
-    @NotEmpty
+    //@NotEmpty
     private String username;
-    @NotEmpty
+    //@NotEmpty
     private String password;
-    @NotEmpty
+    //@NotEmpty
     private String profileId;
     
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> authorities;
     
     // Muuta
+    @OneToMany
+    private List<Image> images;
+    // Maybe this should not be looked at like this?
+    //private List<FriendRequest> requests;
+    
+    @ManyToMany
+    private List<Account> friends;
+    // public List<Likes> likes;
+    // public Image profileImage;
 }
