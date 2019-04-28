@@ -11,6 +11,14 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
+        <div th:fragment="header">
+            <header>
+                <a href="/profile">Profile</a>
+                <a href="/login">Login</a>
+                <a href="/logout">Logout</a>
+                <a href="/images">images</a>
+            </header>
+        </div>
         <div>TODO write content</div>
     </body>
 </html>

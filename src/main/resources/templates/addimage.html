@@ -11,6 +11,7 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
+        <div th:replace="fragments/layout :: header"></div>
         <p>Signed in as <span th:text="${username}">nobody</span></p>
         <p>You have <span th:text="${length}">no</span> image(s).</p>
         <div>Add an image</div>

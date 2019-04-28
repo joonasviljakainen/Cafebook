@@ -5,7 +5,7 @@
         <title>Hello world</title>
     </head>
     <body>
-
+        <div th:replace="fragments/layout :: header"></div>
         <h1 th:text="${'Hello ' + message}">Hello world</h1>
 
 
