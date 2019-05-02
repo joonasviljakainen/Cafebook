@@ -13,6 +13,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author joonas
  */
 public interface FriendRequestRepository extends JpaRepository<FriendRequest, Long> {
-    public List<FriendRequest> findByMakerName(String name);
-    public List<FriendRequest> findByTargetName(String name);
+    public List<FriendRequest> findByMaker(Account maker);
+    public List<FriendRequest> findByTarget(Account target);
 }

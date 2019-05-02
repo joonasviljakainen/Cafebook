@@ -13,7 +13,13 @@ and open the template in the editor.
     <body>
         <div th:replace="fragments/layout :: header"></div>
         <div th:each="profile: ${profiles}">
-            <a th:href="@{/profiles/{pid}(pid=${profile.profileId})}" th:text="${profile.profileId}"></a>
+            <span>
+                <a th:href="@{/profiles/{pid}(pid=${profile.profileId})}" th:text="${profile.profileId}"></a>
+                <form th:action="@{/friendRequests}" method="POST">
+                    <input type="hidden" name="target" th:value="${profile.profileId}"/>
+                    <button type="submit" value="Send Friend Request" >Send a Friend Request</button>
+                </form>
+            </span>
         </div>
     </body>
 </html>

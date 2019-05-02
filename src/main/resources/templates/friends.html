@@ -12,14 +12,15 @@ and open the template in the editor.
     </head>
     <body>
         <div th:replace="fragments/layout :: header"></div>
-        <div th:each="profile: ${profiles}">
+        <h2>Thine Friends, scoundrel</h2>
+        <div th:each="friend : ${friends}">
             <span>
-                <a th:href="@{/profiles/{pid}(pid=${profile.profileId})}" th:text="${profile.profileId}"></a>
-                <form th:action="@{/friendRequests}" method="POST">
-                    <input type="hidden" name="target" th:value="${profile.profileId}"/>
-                    <button type="submit" value="Send Friend Request" >Send a Friend Request</button>
+                <a th:href="@{/profiles/{pid}(pid=${friend.profileId})}" th:text="${friend.username}"></a>
+                <form th:action="@{/friendships/removals/{profileId}(profileId=${friend.profileId})}" method="POST">
+                    <button type="submit" value="Remove friend" >Remove from friends</button>
                 </form>
             </span>
+            
         </div>
     </body>
 </html>

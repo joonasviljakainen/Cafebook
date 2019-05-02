@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div th:replace="fragments/layout :: header"></div>
+        <h4>Requests By Me</h4>
+        <div th:each="request : ${requestsByMe}">
+            <span>
+                <a th:href="@{/profiles/{pid}(pid=${request.target.profileId})}" th:text="${request.target.username}"></a>
+                <form th:action="@{/friends/refusals/{rId}(rId=${request.id})}" method="POST">
+                    <button type="submit" value="Cancel Request" >Cancel Request</button>
+                </form>
+            </span>
+        </div>
+        <h4>Requests At Me</h4>
+        <div th:each="request : ${requestsAtMe}">
+            <span>
+                <a th:href="@{/profiles/{pid}(pid=${request.maker.profileId})}" th:text="${request.maker.username}"></a>
+                <form th:action="@{/friends/requests/{rId}(rId=${request.id})}" method="POST">
+                    <button type="submit" value="Accept Request" >Accept Request</button>
+                </form>
+                <form th:action="@{/friends/refusals/{rId}(rId=${request.id})}" method="POST">
+                    <button type="submit" value="Decline Request" >Decline Request</button>
+                </form>
+            </span>
+        </div>
+    </body>
+</html>
