@@ -18,10 +18,10 @@ and open the template in the editor.
 
         <div>
             <div th:each="image : ${images}">
-                <img th:src="@{/images/{id}(id=${image.id})}" />
-                <p th:text="${image.description}"></p>
+                <a th:href="@{/views/images/{id}(id=${image.id})}"><img style="width:175px; height: 175px;" th:src="@{/images/{id}(id=${image.id})}" /> See This Image</a>
             </div>
         </div>
+        <br />
         <form th:action="@{/images}" method="POST" enctype="multipart/form-data">
             <input type="file" name="image" />
             <input type="text" name="description" />

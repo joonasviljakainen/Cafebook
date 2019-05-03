@@ -5,17 +5,12 @@
  */
 package projekti;
 
-import java.sql.Date;
-import java.util.List;
-import javax.persistence.Basic;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.sql.Date;
+import javax.persistence.ManyToOne;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 /**
@@ -26,17 +21,15 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Image extends AbstractPersistable<Long> {
+class Comment extends AbstractPersistable<Long> {
+    
+    public String text;
+    public Date commentTime;
     
     @ManyToOne
-    public Account owner;
-    public String description;
-    public Date creationDate;
+    public Account commenter;
     
-    @OneToMany
-    public List<Comment> comments;
+    @ManyToOne
+    public Image Image;
     
-    @Lob
-    @Basic(fetch = FetchType.LAZY)
-    public byte[] bytes;
 }

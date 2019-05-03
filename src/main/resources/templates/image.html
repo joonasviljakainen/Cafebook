@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div th:replace="fragments/layout :: header"></div>
+        <div>TODO write content</div>
+
+        <div>
+            <img style="width: 500px" th:src="@{/images/{id}(id=${image.id})}" />
+            <p th:text="${image.description}"></p>
+            <div th:each=" comment : ${comments}">
+                <p th:text="${comment.commenter.username}"></p>
+                <p th:text="${comment.text}"></p>
+                <p th:text="${comment.commentTime.toString()}"></p>
+            </div>
+            <div>
+                <form th:action="@{/images/{id}/comments(id=${image.id})}" method="POST">
+                    <input type="text" placeholder="Write a comment" name="comment"/>
+                    <button type="submit"  value="Submit Comment">Submit Comment</button>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

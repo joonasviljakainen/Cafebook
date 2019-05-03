@@ -51,4 +51,7 @@ public class Account extends AbstractPersistable<Long> {
     
     @OneToMany
     private List<FriendRequest> friendRequests;
+    
+    @OneToMany
+    private List<Comment> imageComments;
 }
