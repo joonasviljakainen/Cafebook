@@ -21,6 +21,7 @@ and open the template in the editor.
         <div class="row justify-content-center">
             <div class="col-8">
                 <div th:replace="fragments/layout :: signindisplay"></div>
+                <div><a th:href="@{/profiles/{id}/gallery(id=${profile.profileId})}">Gallery</a></div>
                 <div style="display: flex; justify-content: space-evenly">
                     <h1 th:text="${profile.username}" style="margin: 0 20px"></h1>
                     <img style="height: 150px; width: 150px; border-radius: 75px;" th:src="@{/profiles/{id}/profilepicture(id=${profile.profileId})}"/>

@@ -30,6 +30,14 @@ and open the template in the editor.
         <div th:fragment="signindisplay">
             <p>Signed in as <span th:text="${username}">nobody</span></p>
         </div>
+
+        <div th:fragment="gallerydisplay">
+            <div th:each="image : ${images}">
+                <a th:href="@{/views/images/{id}(id=${image.id})}">
+                    <img style="width:175px; height: 175px;" th:src="@{/images/{id}(id=${image.id})}" />
+                </a>
+            </div>
+        </div>
         <div>TODO write content</div>
     </body>
 </html>

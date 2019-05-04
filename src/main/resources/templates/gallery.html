@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    </head>
+    <body>
+        <div>
+            <div class="ro justify-content-centerw">
+                <div class ="col-8" th:replace="fragments/layout :: header"></div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-8">
+                    <h1>Gallery for user <span th:text="${profile.username}"></span></h1>
+                    <div style="display: inline-block" th:each="image : ${images}">
+                        <a th:href="@{/views/images/{id}(id=${image.id})}"><img style="width:125px; height: 125px; background-color: '#eee'; margin: 10px; border-radius: 10px;" th:src="@{/images/{id}(id=${image.id})}" /></a>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </body>
+</html>

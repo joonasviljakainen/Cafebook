@@ -62,6 +62,16 @@ public class ProfileController {
         }
         return "profile";
     }
+    
+    @GetMapping("/profiles/{profileId}/gallery")
+    public String getGallery(@PathVariable String profileId, Model model) {
+        Account acc = accountRepository.findByProfileId(profileId);
+        if (acc == null) return "404";
+        model.addAttribute("images", imageRepository.findByOwner(acc));
+        model.addAttribute("profile", acc);
+        
+        return "gallery";
+    }
 
     @GetMapping("/profiles/{profileId}/profilepicture")
     @ResponseBody
