@@ -41,17 +41,25 @@ public class Account extends AbstractPersistable<Long> {
     // Muuta
     @OneToMany
     private List<Image> images;
-    // Maybe this should not be looked at like this?
-    //private List<FriendRequest> requests;
+    
+    //private Image profilePicture;
     
     @ManyToMany
     private List<Account> friends;
     // public List<Likes> likes;
-    // public Image profileImage;
     
     @OneToMany
     private List<FriendRequest> friendRequests;
     
     @OneToMany
     private List<Comment> imageComments;
+    /*
+    public Image getProfileImage() {
+        for (Image im : this.images) {
+            if (im.isProfilePicture == true) {
+                return im;
+            }
+        }
+        return null;
+    }*/
 }

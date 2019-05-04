@@ -19,6 +19,8 @@ and open the template in the editor.
         <div>
             <div th:each="image : ${images}">
                 <a th:href="@{/views/images/{id}(id=${image.id})}"><img style="width:175px; height: 175px;" th:src="@{/images/{id}(id=${image.id})}" /> See This Image</a>
+                <!-- <form th:unless="${image.isProfilePicture}" th:action="@{/profiles/{id}/profilepicture(id=${image.owner.profileId})}" method="POST"> -->
+                <form th:action="@{/profiles/{id}/profilepicture(id=${image.owner.profileId})}" method="POST"><input type="hidden" name="imageId" th:value="${image.id}"/><button type="submit">Set as Profile Picture</button></form>
             </div>
         </div>
         <br />

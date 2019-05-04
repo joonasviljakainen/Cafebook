@@ -14,6 +14,7 @@ and open the template in the editor.
         <div th:replace="fragments/layout :: header"></div>
         <div>
             <h1 th:text="${profile.username}"></h1>
+            <img th:src="@{/profiles/{id}/profilepicture(id=${profile.profileId})}"/>
         </div>
     </body>
 </html>

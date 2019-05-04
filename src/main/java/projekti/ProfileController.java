@@ -7,10 +7,15 @@ package projekti;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
@@ -18,24 +23,73 @@ import org.springframework.web.bind.annotation.PathVariable;
  */
 @Controller
 public class ProfileController {
-    
 
     @Autowired
     private AccountRepository accountRepository;
     
+    @Autowired
+    private ImageRepository imageRepository;
+
     @GetMapping("/profiles")
     public String getProfiles(Model model) {
         List<Account> accs = accountRepository.findAll();
         model.addAttribute("profiles", accs);
         return "profiles";
     }
-    
-    @GetMapping("profiles/{profileId}")
+
+    @GetMapping("/profiles/{profileId}")
     public String getProfile(@PathVariable String profileId, Model model) {
         Account acc = accountRepository.findByProfileId(profileId);
-        if (acc == null) return "404";
+        if (acc == null) {
+            return "404";
+        }
         // KORJAA TÄMÄ; Poista salasanahashi (ehkä oma olio profiilille?)
         model.addAttribute("profile", acc);
         return "profile";
     }
+
+    @GetMapping("/profiles/{profileId}/profilepicture")
+    @ResponseBody
+    public byte[] getProfilePicture(@PathVariable String profileId) {
+        Account acc = accountRepository.findByProfileId(profileId);
+        List<Image> list = imageRepository.findByOwner(acc);
+        
+        for (Image i : list) {
+            if (i.getIsProfilePicture() != null && i.getIsProfilePicture() == true) {
+                return i.getBytes();
+            }
+        }
+        //TODO: default picture
+        return null;
+    }
+    
+    @PostMapping("/profiles/{profileId}/profilepicture")
+    public String setProfilePicture(@PathVariable String profileId,
+            @RequestParam Long imageId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        Account acc = accountRepository.findByProfileId(profileId);
+        
+        if (acc.getUsername().equals(username)) {
+            Image newProfilePic = imageRepository.getOne(imageId);
+            if (newProfilePic.getOwner().equals(acc)) {
+                Image cur;
+                List<Image> imgs = imageRepository.findByOwner(acc);
+                for (Image i: imgs) {
+                    if (i.getIsProfilePicture() == true) {
+                        cur = i;
+                        cur.setIsProfilePicture(false);
+                        imageRepository.save(cur);
+                        break;
+                    }
+                }
+                newProfilePic.setIsProfilePicture(true);
+                imageRepository.save(newProfilePic);
+            }
+        }
+        
+        return "redirect:/profiles/" + profileId;
+    }
+
+    
 }

@@ -33,6 +33,8 @@ public class Image extends AbstractPersistable<Long> {
     public String description;
     public Date creationDate;
     
+    public Boolean isProfilePicture;
+    
     @OneToMany
     public List<Comment> comments;
     
