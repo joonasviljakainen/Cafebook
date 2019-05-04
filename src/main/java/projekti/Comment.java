@@ -23,13 +23,13 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @NoArgsConstructor
 class Comment extends AbstractPersistable<Long> {
     
-    public String text;
-    public Date commentTime;
+    private String text;
+    private Date commentTime;
     
     @ManyToOne
-    public Account commenter;
+    private Account commenter;
     
     @ManyToOne
-    public Image Image;
+    private Image image;
     
 }

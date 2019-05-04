@@ -6,11 +6,13 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Cafebook - your friends</title>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     </head>
     <body>
+        <div class="container">
         <div th:replace="fragments/layout :: header"></div>
         <h2>Thine Friends, scoundrel</h2>
         <div th:each="friend : ${friends}">
@@ -20,7 +22,8 @@ and open the template in the editor.
                     <button type="submit" value="Remove friend" >Remove from friends</button>
                 </form>
             </span>
-            
+
+        </div>
         </div>
     </body>
 </html>

@@ -61,7 +61,7 @@ public class ImageController {
         Image img = imageRepository.getOne(id);
         if (img == null) return "404";
         model.addAttribute("image", img);
-        model.addAttribute("comments", img.getComments());
+        model.addAttribute("comments", commentRepository.findByImage(img));
         return "image";
     }
 
@@ -111,6 +111,7 @@ public class ImageController {
         Image i = new Image();
         i.setBytes(image.getBytes());
         i.setOwner(acc);
+        i.setIsProfilePicture(false);
         Date d = new Date(System.currentTimeMillis());
         i.setCreationDate(d);
         if (description != null && !description.isEmpty()) {

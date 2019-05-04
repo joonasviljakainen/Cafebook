@@ -6,11 +6,14 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Cafebook - Images</title>
+                <meta charset="UTF-8">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     </head>
     <body>
+        <div class="container">
         <div th:replace="fragments/layout :: header"></div>
         <p>Signed in as <span th:text="${username}">nobody</span></p>
         <p>You have <span th:text="${length}">no</span> image(s).</p>
@@ -29,5 +32,6 @@ and open the template in the editor.
             <input type="text" name="description" />
             <input type="submit" value="Send!"/>
         </form>
+        </div>
     </body>
 </html>

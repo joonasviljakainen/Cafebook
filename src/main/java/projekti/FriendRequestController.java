@@ -11,11 +11,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -48,7 +46,6 @@ public class FriendRequestController {
         Account acc = accountRepository.findByUsername(auth.getName());
         if (acc != null) {
             List<FriendRequest> list = friendRequestRepository.findByMaker(acc);
-            System.out.println("LENGTH: " + list.size());
             model.addAttribute("requestsByMe", list);
             model.addAttribute("requestsAtMe", friendRequestRepository.findByTarget(acc));
             return "requests";
@@ -57,12 +54,6 @@ public class FriendRequestController {
 
     }
 
-    /*
-    @GetMapping("/friendRequests/{friendRequestId}")
-    public String getFriendRequests(@PathVariable Long friendRequestId, Model model) {
-        // security context
-        return "null";
-    }*/
     @PostMapping("/friendRequests")
     public String createFriendRequest(@RequestParam String target) {
 
@@ -116,7 +107,6 @@ public class FriendRequestController {
                 friendRequestRepository.delete(req);
             }
         }
-
         return "redirect:/friendRequests";
     }
 
@@ -136,5 +126,4 @@ public class FriendRequestController {
         }
         return "redirect:/friends";
     }
-
 }

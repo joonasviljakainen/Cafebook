@@ -53,6 +53,12 @@ public class Account extends AbstractPersistable<Long> {
     
     @OneToMany
     private List<Comment> imageComments;
+    
+    @OneToMany
+    private List<Message> messagesAtMe;
+    
+    @OneToMany
+    private List<Message> messagesByMe;
     /*
     public Image getProfileImage() {
         for (Image im : this.images) {

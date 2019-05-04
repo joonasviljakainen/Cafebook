@@ -12,15 +12,23 @@ and open the template in the editor.
     </head>
     <body>
         <div th:fragment="header">
-            <header>
-                <a href="/profile">Profile</a>
-                <a href="/login">Login</a>
-                <a href="/logout">Logout</a>
-                <a href="/images">Images</a>
-                <a href="/profiles">Profiles</a>
-                <a href="/friends">Friends</a>
-                <a href="/friendRequests">Requests</a>
-            </header>
+            <div class="row justify-content-center">
+                <div class="col-8">
+                    <header>
+                        <a href="/profile">Profile</a>
+                        <a href="/login">Login</a>
+                        <a href="/logout">Logout</a>
+                        <a href="/images">Images</a>
+                        <a href="/profiles">Profiles</a>
+                        <a href="/friends">Friends</a>
+                        <a href="/friendRequests">Requests</a>
+                    </header>
+                </div>
+            </div>
+        </div>
+
+        <div th:fragment="signindisplay">
+            <p>Signed in as <span th:text="${username}">nobody</span></p>
         </div>
         <div>TODO write content</div>
     </body>

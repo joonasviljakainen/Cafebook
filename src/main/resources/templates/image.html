@@ -6,28 +6,54 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Cafebook - Image <span th:text="image.id"></span></title>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     </head>
     <body>
         <div th:replace="fragments/layout :: header"></div>
-        <div>TODO write content</div>
 
         <div>
-            <img style="width: 500px" th:src="@{/images/{id}(id=${image.id})}" />
+            <img style="height: 500px" th:src="@{/images/{id}(id=${image.id})}" />
             <p th:text="${image.description}"></p>
+
+
+            <div class="row justify-content-center">
+                <div class="col-8">
+                    <p sec:authorize="{isAnonymous()}">Sign in to comment on this image.</p>
+
+                    <div sec:authorize="hasAuthority('USER')" th:unless="${isFriend}">
+                        <p>You must be friends with <span th:text="${profile.username}">this person</span> to leave messages on their wall.</p>
+                        <form  th:action="@{/friendRequests}" method="POST">
+                            <input type="hidden" name="target" th:value="${profile.profileId}"/>
+                            <button type="submit" value="Send Friend Request" >Send a Friend Request</button>
+                        </form>
+                    </div>
+
+                    <form th:if="${isFriend}" th:action="@{/images/{id}/comments(id=${image.id})}" method="POST">
+                        <input type="text" placeholder="Write a comment" name="comment"/>
+                        <button type="submit"  value="Submit Comment">Submit Comment</button>
+                    </form>
+                </div>
+            </div>
+
+
+
             <div th:each=" comment : ${comments}">
                 <p th:text="${comment.commenter.username}"></p>
                 <p th:text="${comment.text}"></p>
                 <p th:text="${comment.commentTime.toString()}"></p>
             </div>
+            <!--
             <div>
-                <form th:action="@{/images/{id}/comments(id=${image.id})}" method="POST">
+                <form th:if="${isFriend}" th:action="@{/images/{id}/comments(id=${image.id})}" method="POST">
                     <input type="text" placeholder="Write a comment" name="comment"/>
                     <button type="submit"  value="Submit Comment">Submit Comment</button>
                 </form>
             </div>
+            -->
         </div>
     </body>
 </html>

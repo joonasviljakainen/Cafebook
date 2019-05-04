@@ -7,6 +7,7 @@ package projekti;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -29,7 +30,10 @@ public class ProfileController {
     
     @Autowired
     private ImageRepository imageRepository;
-
+    
+    @Autowired
+    private MessageRepository messageRepository;
+    
     @GetMapping("/profiles")
     public String getProfiles(Model model) {
         List<Account> accs = accountRepository.findAll();
@@ -43,8 +47,19 @@ public class ProfileController {
         if (acc == null) {
             return "404";
         }
-        // KORJAA TÄMÄ; Poista salasanahashi (ehkä oma olio profiilille?)
+        
         model.addAttribute("profile", acc);
+        model.addAttribute("messages", messageRepository.findByTarget(acc));
+        
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        Account currentlyLoggedInUser = accountRepository.findByUsername(username);
+        model.addAttribute("username", auth.getName());
+        if(currentlyLoggedInUser != null 
+                && (currentlyLoggedInUser.getFriends().contains(acc) 
+                || currentlyLoggedInUser.equals(acc))) {
+            model.addAttribute("isFriend", true);
+        }
         return "profile";
     }
 
@@ -63,6 +78,7 @@ public class ProfileController {
         return null;
     }
     
+    @Secured("USER")
     @PostMapping("/profiles/{profileId}/profilepicture")
     public String setProfilePicture(@PathVariable String profileId,
             @RequestParam Long imageId) {
@@ -91,5 +107,4 @@ public class ProfileController {
         return "redirect:/profiles/" + profileId;
     }
 
-    
 }

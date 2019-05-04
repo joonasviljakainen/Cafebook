@@ -5,13 +5,16 @@
  */
 package projekti;
 
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  *
  * @author joonas
  */
-public interface CommentRepository extends JpaRepository<Comment, Long>{
+public interface CommentRepository extends JpaRepository<Comment, Long> {
+    
+    public List<Comment> findByImage(Image image);
     
 }
  
