@@ -9,7 +9,8 @@ import javax.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.sql.Date;
+//import java.sql.Date;
+import java.time.LocalDateTime;
 import javax.persistence.ManyToOne;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
@@ -24,7 +25,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 class Comment extends AbstractPersistable<Long> {
     
     private String text;
-    private Date commentTime;
+    private LocalDateTime commentTime;
     
     @ManyToOne
     private Account commenter;

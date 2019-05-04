@@ -103,7 +103,6 @@ public class ProfileController {
                 imageRepository.save(newProfilePic);
             }
         }
-        
         return "redirect:/profiles/" + profileId;
     }
 

@@ -6,9 +6,8 @@
 package projekti;
 
 import java.io.IOException;
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
-import javax.tools.FileObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
@@ -62,9 +61,15 @@ public class ImageController {
         if (img == null) return "404";
         model.addAttribute("image", img);
         model.addAttribute("comments", commentRepository.findByImage(img));
+        
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Account acc = accountRepository.findByUsername(auth.getName());
+        
+        model.addAttribute("isFriend", (img.getOwner().equals(acc) || img.getOwner().getFriends().contains(acc)));
         return "image";
     }
-
+    
+    @Secured("USER")
     @PostMapping(path = "/images/{id}/comments")
     public String createImageComment(@PathVariable Long id, 
             @RequestParam String comment) {
@@ -80,7 +85,7 @@ public class ImageController {
         if (cur != null && acc != null) {
             Comment c = new Comment();
             c.setText(comment);
-            c.setCommentTime(new Date(System.currentTimeMillis()));
+            c.setCommentTime(LocalDateTime.now());
             c.setImage(cur);
             c.setCommenter(acc);
             cur.getComments().add(c);
@@ -112,8 +117,7 @@ public class ImageController {
         i.setBytes(image.getBytes());
         i.setOwner(acc);
         i.setIsProfilePicture(false);
-        Date d = new Date(System.currentTimeMillis());
-        i.setCreationDate(d);
+        i.setCreationDateTime(LocalDateTime.now());
         if (description != null && !description.isEmpty()) {
             i.setDescription(description);
         }

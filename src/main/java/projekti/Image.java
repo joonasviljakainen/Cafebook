@@ -5,7 +5,7 @@
  */
 package projekti;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
@@ -31,7 +31,7 @@ public class Image extends AbstractPersistable<Long> {
     @ManyToOne
     public Account owner;
     public String description;
-    public Date creationDate;
+    public LocalDateTime creationDateTime;
     
     public Boolean isProfilePicture;
     

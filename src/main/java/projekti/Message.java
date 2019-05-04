@@ -5,7 +5,7 @@
  */
 package projekti;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
@@ -28,6 +28,6 @@ public class Message extends AbstractPersistable<Long>{
     @ManyToOne
     private Account target;
     
-    private Date createdAt;
+    private LocalDateTime createdAt;
     private String msg;
 }

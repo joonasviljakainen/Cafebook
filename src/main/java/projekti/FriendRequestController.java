@@ -7,6 +7,7 @@ package projekti;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -29,6 +30,7 @@ public class FriendRequestController {
     @Autowired
     private FriendRequestRepository friendRequestRepository;
 
+    @Secured("USER")
     @GetMapping("/friends")
     public String getOwnFriends(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -36,8 +38,9 @@ public class FriendRequestController {
         if (acc != null) {
             List<Account> friends = acc.getFriends();
             model.addAttribute("friends", friends);
+            return "friends";
         }
-        return "friends";
+        return "redirect:/login";
     }
 
     @GetMapping("/friendRequests")
@@ -50,10 +53,11 @@ public class FriendRequestController {
             model.addAttribute("requestsAtMe", friendRequestRepository.findByTarget(acc));
             return "requests";
         }
-        return "redirect:/";
+        return "redirect:/login";
 
     }
 
+    @Secured("USER")
     @PostMapping("/friendRequests")
     public String createFriendRequest(@RequestParam String target) {
 
@@ -77,6 +81,7 @@ public class FriendRequestController {
     }
 
     // Weird URL due to PUT not being supported in HTML forms
+    @Secured("USER")
     @PostMapping("/friends/requests/{friendRequestId}")
     public String confirmFriendRequest(@PathVariable Long friendRequestId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -96,6 +101,7 @@ public class FriendRequestController {
     }
 
     // Deletes a request. Either user can delete, resulting in a cancelled or declined request.
+    @Secured("USER")
     @PostMapping("/friends/refusals/{friendRequestId}")
     public String deleteFriendRequest(@PathVariable Long friendRequest) {
 
@@ -111,6 +117,7 @@ public class FriendRequestController {
     }
 
     // Removes a friend
+    @Secured("USER")
     @PostMapping("/friendships/removals/{profileId}")
     public String removeFriendship(@PathVariable String profileId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

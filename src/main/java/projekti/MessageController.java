@@ -5,7 +5,7 @@
  */
 package projekti;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -47,7 +47,7 @@ public class MessageController {
         m.setMsg(messageContent);
         m.setOwner(sender);
         m.setTarget(receiver);
-        m.setCreatedAt(new Date(System.currentTimeMillis()));
+        m.setCreatedAt(LocalDateTime.now());
         
         messageRepository.save(m);
         
