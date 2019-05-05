@@ -25,8 +25,8 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 public class FriendRequest extends AbstractPersistable<Long> {
     
     @ManyToOne
-    public Account maker;
+    private Account maker;
     
     @ManyToOne
-    public Account target;
+    private Account target;
 }
