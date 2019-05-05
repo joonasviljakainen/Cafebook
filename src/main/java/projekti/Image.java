@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
@@ -37,6 +38,9 @@ public class Image extends AbstractPersistable<Long> {
     
     @OneToMany
     public List<Comment> comments;
+    
+    @ManyToMany
+    public List<Account> likers;
     
     @Lob
     @Basic(fetch = FetchType.LAZY)

@@ -46,24 +46,31 @@ and open the template in the editor.
                     <button type="submit">Send Message</button>
                 </form>
 
-                
+
                 <div class="comment" th:each="message : ${messages}">
-                    
+
                     <div>
                         <p th:text="${message.owner.username}"></p>
                         <p th:text="${message.createdAt.toString()}"></p>
                         <p th:text="${message.msg}"></p>
                     </div>
-                    
+
                     <div>
                         <p><span th:text="${message.messageComments.size()}"> </span> comments</p>
-                        <p><span th:text="${message.likers.size()}"> </span> Likes</p>
+                        <p><span th:text="${#lists.size(message.likers)}"> </span> L's</p>
                         <div th:if="${isFriend}">
-                            <p th:if="${#lists.contains(message.likers, profile)}">Liked</p>
-                            <p th:unless="${#lists.contains(message.likers, profile)}"><form th:action="@{/profiles/{profileId}/messages/{messageId}/likes(profileId=${profile.profileId},messageId=${message.id})}" method="POST"><button type="submit">Like this</button></form></p>
+                            <p th:if="${#lists.contains(message.likers, currentlyLoggedInUser)}"><bold>LIKED BY YOU</bold></p>
+                            <div th:unless="${#lists.contains(message.likers, currentlyLoggedInUser)}">
+                                <div th:each="liker : ${message.likers}">
+                                    <span th:text="${liker.username}"></span>
+                                </div>
+                                <form th:action="@{/profiles/{profileId}/messages/{messageId}/likes(profileId=${profile.profileId},messageId=${message.id})}" method="POST">
+                                    <button type="submit">Like this</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                    
+
                     <div th:if="${isFriend}">
                         <p>Leave a comment</p>
                         <form method="POST" th:action="@{/profiles/{profileId}/messages/{messageId}/comments(profileId=${profile.profileId},messageId=${message.id})}">
@@ -71,7 +78,7 @@ and open the template in the editor.
                             <button type="submit">Submit comment</button>
                         </form>
                     </div>
-                    
+
                     <div class="messageComments"> comments
 
                         <div th:each="comment : ${message.messageComments}">

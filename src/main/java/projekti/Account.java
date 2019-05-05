@@ -27,11 +27,11 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @NoArgsConstructor
 public class Account extends AbstractPersistable<Long> {
     
-    //@NotEmpty
+    
     private String username;
-    //@NotEmpty
+    
     private String password;
-    //@NotEmpty
+    
     private String profileId;
     
     @ElementCollection(fetch = FetchType.EAGER)
@@ -41,11 +41,8 @@ public class Account extends AbstractPersistable<Long> {
     @OneToMany
     private List<Image> images;
     
-    //private Image profilePicture;
-    
     @ManyToMany
     private List<Account> friends;
-    // public List<Likes> likes;
     
     @OneToMany
     private List<FriendRequest> friendRequests;
@@ -56,18 +53,12 @@ public class Account extends AbstractPersistable<Long> {
     @ManyToMany
     private List<Message> likedMessages;
     
+    @ManyToMany
+    private List<Image> likedImages;
+    
     @OneToMany
     private List<Message> messagesAtMe;
     
     @OneToMany
     private List<Message> messagesByMe;
-    /*
-    public Image getProfileImage() {
-        for (Image im : this.images) {
-            if (im.isProfilePicture == true) {
-                return im;
-            }
-        }
-        return null;
-    }*/
 }
