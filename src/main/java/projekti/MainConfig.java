@@ -1,4 +1,4 @@
-
+/*
 package projekti;
 
 import java.net.URI;
@@ -24,4 +24,4 @@ public class MainConfig {
 
         return basicDataSource;
     }
-}
+}*/
