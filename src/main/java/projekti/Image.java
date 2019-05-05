@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 /**
@@ -42,7 +43,8 @@ public class Image extends AbstractPersistable<Long> {
     @ManyToMany
     public List<Account> likers;
     
-    @Lob
-    @Basic(fetch = FetchType.LAZY)
+    //@Lob
+    //@Basic(fetch = FetchType.LAZY)
+    @Type(type="org.hibernate.type.BinaryType")
     public byte[] bytes;
 }
