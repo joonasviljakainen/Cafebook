@@ -1,6 +1,7 @@
 package projekti;
 
 import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -41,6 +42,9 @@ public class DefaultController {
             @RequestParam String password,
             @RequestParam String profileId) {
 
+        System.out.println("REGISTERING");
+        System.out.println("");
+        System.out.println("");
         Account acc = new Account();
         acc.setUsername(username);
         acc.setProfileId(profileId);
@@ -48,7 +52,16 @@ public class DefaultController {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String hash = passwordEncoder.encode(password);
         acc.setPassword(hash);
-        //acc.setRequests(new ArrayList<>());
+        
+        acc.setLikedImages(new ArrayList<>());
+        acc.setFriendRequests(new ArrayList<>());
+        acc.setFriends(new ArrayList<>());
+        acc.setLikedImages(new ArrayList<>());
+        acc.setLikedMessages(new ArrayList<>());
+        acc.setMessagesAtMe(new ArrayList<>());
+        acc.setMessagesByMe(new ArrayList<>());
+        acc.setImageComments(new ArrayList<>());
+        
         accountRepository.save(acc);
         return "redirect:/";
     }
