@@ -36,10 +36,12 @@ public class ImageController {
     
     @Autowired CommentRepository commentRepository;
 
+    @Secured("USER")
     @GetMapping("/images")
     public String getImageAdder(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Account acc = accountRepository.findByUsername(auth.getName());
+        if (acc == null) return "403";
         List<Image> l = imageRepository.findByOwner(acc);
 
         model.addAttribute("images", l);

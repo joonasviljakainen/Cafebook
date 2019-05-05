@@ -53,13 +53,17 @@ public class ProfileController {
         
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
+        
         Account currentlyLoggedInUser = accountRepository.findByUsername(username);
         model.addAttribute("username", auth.getName());
+        
         if(currentlyLoggedInUser != null 
                 && (currentlyLoggedInUser.getFriends().contains(acc) 
                 || currentlyLoggedInUser.equals(acc))) {
             model.addAttribute("isFriend", true);
         }
+        
+        model.addAttribute("currentlyLoggedInUser", currentlyLoggedInUser);
         return "profile";
     }
     

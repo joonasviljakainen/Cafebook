@@ -7,6 +7,7 @@ package projekti;
 
 import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -25,9 +26,11 @@ public class MessageController {
     private AccountRepository accountRepository;
     @Autowired
     private MessageRepository messageRepository;
+    @Autowired
+    private MessageCommentRepository messageCommentRepository;
     
     
-    
+    @Secured("USER")
     @PostMapping("/profiles/{profileId}/messages")
     public String postMessage(@PathVariable String profileId,
             @RequestParam String messageContent) {
@@ -50,6 +53,60 @@ public class MessageController {
         m.setCreatedAt(LocalDateTime.now());
         
         messageRepository.save(m);
+        
+        return "redirect:/profiles/" + profileId;
+    }
+    
+    @Secured("USER")
+    @PostMapping("/profiles/{profileId}/messages/{messageId}/comments")
+    public String postMessageComment(@PathVariable String profileId,
+            @PathVariable Long messageId,
+            @RequestParam String comment) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        
+        Account sender = accountRepository.findByUsername(username);
+        if (sender == null) return "403";
+        Account receiver = accountRepository.findByProfileId(profileId);
+        if (receiver == null) return "404";
+        
+        Message msg = messageRepository.getOne(messageId);
+        if (msg == null) return "404";
+        
+        MessageComment mc = new MessageComment();
+        mc.setContent(comment);
+        mc.setOwner(sender);
+        mc.setMessage(msg);
+        mc.setCreatedAt(LocalDateTime.now());
+        
+        messageCommentRepository.save(mc);
+        msg.getMessageComments().add(mc);
+        messageRepository.save(msg);
+        
+        return "redirect:/profiles/" + profileId;
+    }
+    
+    @Secured("USER")
+    @PostMapping("/profiles/{profileId}/messages/{messageId}/likes")
+    public String likeMessage(@PathVariable String profileId,
+            @PathVariable Long messageId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        
+        Account sender = accountRepository.findByUsername(username);
+        if (sender == null) return "403";
+        Account receiver = accountRepository.findByProfileId(profileId);
+        if (receiver == null) return "404";
+        
+        Message msg = messageRepository.getOne(messageId);
+        if (msg == null) return "404";
+        
+        if (sender.getLikedMessages().contains(msg)) return "redirect:/profiles/" + profileId;
+        
+        sender.getLikedMessages().add(msg);
+        msg.getLikers().add(sender);
+        accountRepository.save(sender);
+        messageRepository.save(msg);
         
         return "redirect:/profiles/" + profileId;
     }
