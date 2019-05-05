@@ -69,7 +69,7 @@ public class FriendRequestController {
         Account makerAcc = accountRepository.findByUsername(auth.getName());
         Account targetAcc = accountRepository.findByProfileId(target);
 
-        if (makerAcc != null && targetAcc != null) {
+        if (makerAcc != null && targetAcc != null && !makerAcc.equals(targetAcc)) {
             FriendRequest fr = new FriendRequest();
             fr.setMaker(makerAcc);
             fr.setTarget(targetAcc);
@@ -103,13 +103,13 @@ public class FriendRequestController {
     // Deletes a request. Either user can delete, resulting in a cancelled or declined request.
     @Secured("USER")
     @PostMapping("/friends/refusals/{friendRequestId}")
-    public String deleteFriendRequest(@PathVariable Long friendRequest) {
+    public String deleteFriendRequest(@PathVariable Long friendRequestId) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Account acc = accountRepository.findByUsername(auth.getName());
         if (acc != null) {
-            FriendRequest req = friendRequestRepository.getOne(friendRequest);
-            if (req.maker.equals(acc) || req.target.equals(acc)) {
+            FriendRequest req = friendRequestRepository.getOne(friendRequestId);
+            if (req.getTarget().equals(acc) || req.getMaker().equals(acc)) {
                 friendRequestRepository.delete(req);
             }
         }
