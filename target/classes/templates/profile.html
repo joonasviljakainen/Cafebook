@@ -11,20 +11,21 @@ and open the template in the editor.
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/base.css">
     </head>
     <body>
-        <div class="row justify-content-center">
-            <div class="row justify-content-center">
-                <div th:replace="fragments/layout :: header"></div>
-            </div>
-        </div>
+
+        <div th:replace="fragments/layout :: header"></div>
+
         <div class="row justify-content-center">
             <div class="col-8">
                 <div th:replace="fragments/layout :: signindisplay"></div>
-                <div><a th:href="@{/profiles/{id}/gallery(id=${profile.profileId})}">Gallery</a></div>
-                <div style="display: flex; justify-content: space-evenly">
-                    <h1 th:text="${profile.username}" style="margin: 0 20px"></h1>
-                    <img style="height: 150px; width: 150px; border-radius: 75px;" th:src="@{/profiles/{id}/profilepicture(id=${profile.profileId})}"/>
+                <div class="profileContainer" style="display: flex; justify-content: space-evenly">
+                    <div>
+                        <h1 class="profile-header" th:text="${profile.username}" style="margin: 0 20px"></h1>
+                        <div class="gallery-link"><a th:href="@{/profiles/{id}/gallery(id=${profile.profileId})}">Gallery</a></div>
+                    </div>
+                    <img  class="profile-pic" style="height: 150px; width: 150px; border-radius: 75px;" th:src="@{/profiles/{id}/profilepicture(id=${profile.profileId})}"/>
                 </div>
             </div>
         </div>
@@ -35,35 +36,40 @@ and open the template in the editor.
 
                 <div sec:authorize="hasAuthority('USER')" th:unless="${isFriend}">
                     <p>You must be friends with <span th:text="${profile.username}">this person</span> to leave messages on their wall.</p>
-                    <form  th:action="@{/friendRequests}" method="POST">
-                        <input type="hidden" name="target" th:value="${profile.profileId}"/>
-                        <button type="submit" value="Send Friend Request" >Send a Friend Request</button>
+                    <form th:action="@{/friendRequests}" method="POST">
+                        <div class="form-group">
+                            <input class="form-control" type="hidden" name="target" th:value="${profile.profileId}"/>
+                        </div>
+                        <div class="form-group">
+                            <button class="form-control" type="submit" value="Send Friend Request" >Send a Friend Request</button>
+                        </div>
                     </form>
                 </div>
 
                 <form th:if="${isFriend}" method="POST" th:action="@{/profiles/{id}/messages(id=${profile.profileId})}">
-                    <input type="text" name="messageContent"></input>
-                    <button type="submit">Send Message</button>
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="messageContent"></input>
+                    </div>
+                    <div class="form-group">
+                        <button class="form-control" type="submit">Post to this person's wall</button>
+                    </div>
                 </form>
 
 
-                <div class="comment" th:each="message : ${messages}">
+                <div class="message" th:each="message : ${messages}">
                     <a th:href="@{/profiles/{profileId}/messages/{messageId}(profileId=${profile.profileId},messageId=${message.id})}">See full thread</a>
-                    <div>
-                        <p th:text="${message.owner.username}"></p>
-                        <p th:text="${message.createdAt.toString()}"></p>
-                        <p th:text="${message.msg}"></p>
+                    <div class="msg-container">
+                        <p class="msg-author" th:text="${message.owner.username}"></p>
+                        <p class="msg-time" th:text="${message.createdAt.toString()}"></p>
+                        <p class="msg-content" th:text="${message.msg}"></p>
                     </div>
 
-                    <div>
-                        <p><span th:text="${message.messageComments.size()}"> </span> comments</p>
-                        <p><span th:text="${#lists.size(message.likers)}"> </span> L's</p>
-                        <div th:if="${isFriend}">
-                            <p th:if="${#lists.contains(message.likers, currentlyLoggedInUser)}"><bold>LIKED BY YOU</bold></p>
-                            <div th:unless="${#lists.contains(message.likers, currentlyLoggedInUser)}">
-                                <div th:each="liker : ${message.likers}">
-                                    <span th:text="${liker.username}"></span>
-                                </div>
+                    <div class="message-meta-container">
+                        <p class="message-meta-element"><span th:text="${message.messageComments.size()}"> </span> comments</p>
+                        <p class="message-meta-element"><span th:text="${#lists.size(message.likers)}"> </span> L's</p>
+                        <div class="message-meta-element" th:if="${isFriend}">
+                            <p class="message-meta-element" th:if="${#lists.contains(message.likers, currentlyLoggedInUser)}"><bold>LIKED BY YOU</bold></p>
+                            <div class="message-meta-element" th:unless="${#lists.contains(message.likers, currentlyLoggedInUser)}">
                                 <form th:action="@{/profiles/{profileId}/messages/{messageId}/likes(profileId=${profile.profileId},messageId=${message.id})}" method="POST">
                                     <button type="submit">Like this</button>
                                 </form>
@@ -74,17 +80,25 @@ and open the template in the editor.
                     <div th:if="${isFriend}">
                         <p>Leave a comment</p>
                         <form method="POST" th:action="@{/profiles/{profileId}/messages/{messageId}/comments(profileId=${profile.profileId},messageId=${message.id})}">
-                            <input type="text" name="comment" placeholder="Write a comment..." />
-                            <button type="submit">Submit comment</button>
+                            <div class="">
+                                <div class="form-group">
+                                    <input class="form-control" type="text" name="comment" placeholder="Write a comment..." />
+                                </div>
+                                <div class="form-group">
+                                    <button class="form-control" type="submit">Submit comment</button>
+                                </div>
+                            </div>
                         </form>
                     </div>
 
                     <div class="messageComments"> comments
 
-                        <div th:each="comment : ${message.messageComments}">
-                            <p th:text="${comment.owner.username}"></p>
-                            <p th:text="${comment.createdAt.toString()}"></p>
-                            <p th:text="${comment.content}"></p>
+                        <div class="comment" th:each="comment : ${message.messageComments}">
+                            <div class="cmt-container">
+                                <p class="cmt-author" th:text="${comment.owner.username}"></p>
+                                <p class="cmt-time" th:text="${comment.createdAt.toString()}"></p>
+                                <p class="cmt-content" th:text="${comment.content}"></p>
+                            </div>
                         </div>
                     </div>
                 </div>

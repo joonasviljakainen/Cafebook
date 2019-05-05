@@ -1,0 +1,121 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : May 5, 2019, 6:25:32 PM
+    Author     : joonas
+*/
+
+h1 {
+    font-size: 50px;
+}
+
+body {
+    font-family: monospace;
+}
+
+.comment {
+    
+}
+
+.message {
+     margin-top: 80px;
+     padding: 80px;
+     border-bottom: 5px solid lightslategray;
+}
+.message-meta-container {
+    padding: 10px;
+    
+}
+
+.msg-author, .msg-time {
+    display: inline-block;
+    margin: 0 10px;
+}
+
+.msg-container {
+    margin-bottom: 15px;
+}
+
+.msg-author, .msg-time {
+    margin-bottom: 0;
+}
+
+.message-meta-element {
+    margin: 0 10px;
+    display: inline-block;
+}
+
+.msg-content {
+    background-color: beige;
+    margin: 0;
+    padding: 10px;
+}
+
+.cmt-container, .msg-container {
+    border: 1px solid black;
+    background-color: cornflowerblue;
+    padding: 5px;
+}
+
+.cmt-container {
+    margin-left: 15px;
+    
+    background-color: activecaption;
+}
+
+.cmt-author {
+    max-width: 30%;
+    display: inline-block;
+    margin-bottom: 0;
+}
+
+.cmt-time {
+    display: inline-block;
+    margin-bottom: 0;
+}
+
+.cmt-content {
+    margin: 0;
+    padding: 15px;
+    background-color: beige;
+}
+
+.profileContainer {
+    margin-bottom: 50px;
+    padding: 30px;
+    background-color: background;
+}
+
+.gallery-link {
+    margin-top: 30px;
+    text-align: right;
+}
+
+.image-description {
+    background-color: azure;
+    padding: 20px 10px;
+    margin-bottom: 40px;
+    
+}
+
+.image-display {
+    display: flex;
+    
+}
+
+.image-container {
+    height: 250px;
+    width: 200px;
+    margin: 10px;
+}
+
+#form-add-image {
+    margin-top: 100px;
+}
+
+.person {
+    margin: 20px;
+}

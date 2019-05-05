@@ -18,7 +18,8 @@ public class DefaultController {
     @Autowired
     AccountRepository accountRepository;
 
-    @GetMapping("*")
+    
+    @GetMapping("/index")
     public String helloWorld(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {

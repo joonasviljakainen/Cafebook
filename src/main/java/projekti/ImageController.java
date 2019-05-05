@@ -47,6 +47,7 @@ public class ImageController {
         model.addAttribute("images", l);
         model.addAttribute("length", l.size());
         model.addAttribute("username", auth.getName());
+        model.addAttribute("profileId", acc.getProfileId());
         return "addimage";
     }
 

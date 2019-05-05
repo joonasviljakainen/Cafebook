@@ -7,31 +7,44 @@ and open the template in the editor.
 <html>
     <head>
         <title>Cafebook - Images</title>
-                <meta charset="UTF-8">
+        <meta charset="UTF-8">
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/base.css">
     </head>
     <body>
         <div class="container">
-        <div th:replace="fragments/layout :: header"></div>
-        <p>Signed in as <span th:text="${username}">nobody</span></p>
-        <p>You have <span th:text="${length}">no</span> image(s).</p>
-        <div>Add an image</div>
+            <div class="row justify-content-center">
+                <div class="col-8">
+                    <div th:replace="fragments/layout :: header"></div>
 
-        <div>
-            <div th:each="image : ${images}">
-                <a th:href="@{/views/images/{id}(id=${image.id})}"><img style="width:175px; height: 175px;" th:src="@{/images/{id}(id=${image.id})}" /> See This Image</a>
-                <!-- <form th:unless="${image.isProfilePicture}" th:action="@{/profiles/{id}/profilepicture(id=${image.owner.profileId})}" method="POST"> -->
-                <form th:action="@{/profiles/{id}/profilepicture(id=${image.owner.profileId})}" method="POST"><input type="hidden" name="imageId" th:value="${image.id}"/><button type="submit">Set as Profile Picture</button></form>
+                    <h1>Your images</h1>
+                    <p>Manage your images here. To see your gallery, go to <a th:href="@{/profiles/{profileId}/gallery(profileId=${profileId})}">your gallery</a>.</p>
+                    <p>You have <span th:text="${length}">no</span> image(s).</p>
+                    <div>Add an image</div>
+
+                    <div class="image-display">
+                        <div class="image-container" th:each="image : ${images}">
+                            <a th:href="@{/views/images/{id}(id=${image.id})}"><img style="width:200px; height: 200px;" th:src="@{/images/{id}(id=${image.id})}" /></a>
+                            <form th:unless="${image.isProfilePicture}" th:action="@{/profiles/{id}/profilepicture(id=${image.owner.profileId})}" method="POST"><input type="hidden" name="imageId" th:value="${image.id}"/><button type="submit">Set as Profile Picture</button></form>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <br />
-        <form th:action="@{/images}" method="POST" enctype="multipart/form-data">
-            <input type="file" name="image" />
-            <input type="text" name="description" />
-            <input type="submit" value="Send!"/>
-        </form>
+            <br />
+            <div class="row justify-content-center">
+                <div class="col-8">
+                    <div id="form-add-image"></div>
+                    <h3>Add a new image</h3>
+                    <p>note that if you have 10 images, you cannot add any more. Images cannot be deleted.</p>
+                    <form th:action="@{/images}" method="POST" enctype="multipart/form-data">
+                        <input type="file" name="image" />
+                        <input type="text" name="description" />
+                        <input type="submit" value="Send!"/>
+                    </form>
+                </div>
+            </div>
         </div>
     </body>
 </html>

@@ -11,6 +11,7 @@ and open the template in the editor.
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/base.css">
     </head>
     <body>
         <div th:replace="fragments/layout :: header"></div>
@@ -18,48 +19,50 @@ and open the template in the editor.
         <div class="row justify-content-center">
             <div class="col-8">
                 <img style="height: 500px" th:src="@{/images/{id}(id=${image.id})}" />
-                <p th:text="${image.description}"></p>
-                
+                <p class="image-description" th:text="${image.description}"></p>
+
                 <div>
-                        <p><span th:text="${#lists.size(image.likers)}"> </span> L's</p>
-                        <div th:if="${isFriend}">
-                            <p th:if="${#lists.contains(image.likers, currentlyLoggedInUser)}"><bold>LIKED BY YOU</bold></p>
-                            <div th:unless="${#lists.contains(image.likers, currentlyLoggedInUser)}">
-                                <div th:each="liker : ${image.likers}">
-                                    <span th:text="${liker.username}"></span>
-                                </div>
-                                <form th:action="@{/images/{imageId}/likes(imageId=${image.id})}" method="POST">
-                                    <button type="submit">Like this</button>
-                                </form>
-                            </div>
+                    <p class="message-meta-element"><span th:text="${#lists.size(image.likers)}"> </span> L's</p>
+                    <div class="message-meta-element" th:if="${isFriend}">
+                        <p class="message-meta-element" th:if="${#lists.contains(image.likers, currentlyLoggedInUser)}"><bold>LIKED BY YOU</bold></p>
+                        <div class="message-meta-element" th:unless="${#lists.contains(image.likers, currentlyLoggedInUser)}">
+                            <form th:action="@{/images/{imageId}/likes(imageId=${image.id})}" method="POST">
+                                <button class="message-meta-element" type="submit">Like this</button>
+                            </form>
                         </div>
                     </div>
+                </div>
             </div>
         </div>
-        
+
         <div class="row justify-content-center">
             <div class="row justify-content-center">
-               
+
                 <div class="col-8">
                     <p sec:authorize="{isAnonymous()}">Sign in to comment on this image.</p>
 
                     <div sec:authorize="hasAuthority('USER')" th:unless="${isFriend}">
-                        <p>You must be friends with <a th:href="@{/profiles/{id}(id=${profile.profileId})}" th:text="${profile.username}">this person</a> to comment on this image. </p>
+                        <p>You must be friends with 
+                            <a th:href="@{/profiles/{id}(id=${profile.profileId})}" th:text="${profile.username}">this person
+                            </a> to comment on this image. 
+                        </p>
                     </div>
 
                     <form th:if="${isFriend}" th:action="@{/images/{id}/comments(id=${image.id})}" method="POST">
                         <input type="text" placeholder="Comment on this image..." name="comment"/>
-                        <button type="submit"  value="Submit Comment">Submit Comment</button>
+                        <button  type="submit"  value="Submit Comment">Submit Comment</button>
                     </form>
                 </div>
             </div>
         </div>
         <div class="col-8" style="margin: 0 auto">
-            <ul style="width: 100"  th:each=" comment : ${comments}">
-                <li th:text="${comment.commenter.username}"></p>
-                <li th:text="${comment.text}"></p>
-                <li th:text="${comment.commentTime.toString()}"></p>
-            </ul>
+            <div class="comment" style="width: 100"  th:each=" comment : ${comments}">
+                <div class="cmt-container">
+                    <p class="cmt-author" th:text="${comment.commenter.username}"></p>
+                    <p class="cmt-time" th:text="${comment.commentTime.toString()}"></p>
+                    <p class="cmt-content" th:text="${comment.text}"></p>
+                </div>
+            </div>
         </div>
     </body>
 </html>
