@@ -11,6 +11,8 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -61,6 +63,27 @@ public class MessageController {
 
         return "redirect:/profiles/" + profileId;
     }
+    
+    @GetMapping("/profiles/{profileId}/messages/{messageId}")
+    public String getMessage(@PathVariable String profileId,
+            @PathVariable Long messageId, 
+            Model model) {
+        
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        Account currentlyAuthenticatedUser = accountRepository.findByUsername(username);
+        
+        if (currentlyAuthenticatedUser != null) {
+            model.addAttribute("currentlyAuthenticatedUser", currentlyAuthenticatedUser);
+        }
+        
+        Message msg = messageRepository.getOne(messageId);
+        model.addAttribute("message", msg);
+        Account prof = accountRepository.findByProfileId(profileId);
+        model.addAttribute("profile", prof);
+        model.addAttribute("isFriend", prof.getFriends().contains(currentlyAuthenticatedUser));
+        return "message";
+    }
 
     @Secured("USER")
     @PostMapping("/profiles/{profileId}/messages/{messageId}/comments")
@@ -94,7 +117,7 @@ public class MessageController {
         msg.getMessageComments().add(mc);
         messageRepository.save(msg);
 
-        return "redirect:/profiles/" + profileId;
+        return "redirect:/profiles/" + profileId + "/messages/" + messageId;
     }
 
     @Secured("USER")
@@ -127,7 +150,7 @@ public class MessageController {
         accountRepository.save(sender);
         messageRepository.save(msg);
 
-        return "redirect:/profiles/" + profileId;
+        return "redirect:/profiles/" + profileId + "/messages/" + messageId;
     }
 
     // TODO: messages by me

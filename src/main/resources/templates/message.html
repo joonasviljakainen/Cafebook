@@ -7,10 +7,69 @@ and open the template in the editor.
 <html>
     <head>
         <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     </head>
     <body>
-        <div>TODO write content</div>
-    </body>
+        <div th:replace="fragments/layout :: header"></div>
+        <div class="row justify-content-center">
+            <h1>Message</h1>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <p th:text="${message.msg}"></p>
+                <p th:text="${message.createdAt}"></p>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-8">
+
+                <div>
+                    <p>
+                        <span th:text="${#lists.size(message.likers)}"> </span> L's
+                    </p>
+                    <div th:if="${isFriend}">
+                        <p th:if="${#lists.contains(message.likers, currentlyAuthenticatedUser)}"><bold>LIKED BY YOU</bold></p>
+                        <div th:unless="${#lists.contains(message.likers, currentlyAuthenticatedUser)}">
+                            <div th:each="liker : ${message.likers}">
+                                <span th:text="${liker.username}"></span>
+                            </div>
+                            <form th:action="@{/profiles/{profileId}/messages/{messageId}/likes(profileId=${profileId},messageId=${message.id})}" method="POST">
+                                <button type="submit">Like this</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>  
+        <div class="row justify-content-center">
+
+            <div class="col-8">
+                <div>
+                    <p sec:authorize="{isAnonymous()}">Sign in to comment on this post.</p>
+
+                    <div sec:authorize="hasAuthority('USER')" th:unless="${isFriend}">
+                        <p>You must be friends with <a th:href="@{/profiles/{id}(id=${profile.profileId})}" th:text="${profile.username}">this person</a> to comment on this image. </p>
+                    </div>
+
+                    <form th:if="${isFriend}" th:action="@{/profiles/{id}/messages/{messageId}/comments(id=${profile.profileId},messageId=${message.id})}" method="POST">
+                        <input type="text" placeholder="Comment on this post..." name="comment"/>
+                        <button type="submit"  value="Submit Comment">Submit Comment</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-8" style="margin: 0 auto">
+            <p>This post has <span th:text="${#lists.size(message.messageComments)}">0</span> comment(s).</p>
+            <div style="width: 100"  th:each=" comment : ${message.messageComments}">
+                <p th:text="${comment.owner.username}"></p>
+                <p th:text="${comment.createdAt.toString()}"></p>
+                <p th:text="${comment.content}"></p>
+            </div>
+        </div>
+    </div>
+</body>
 </html>

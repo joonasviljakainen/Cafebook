@@ -48,7 +48,7 @@ and open the template in the editor.
 
 
                 <div class="comment" th:each="message : ${messages}">
-
+                    <a th:href="@{/profiles/{profileId}/messages/{messageId}(profileId=${profile.profileId},messageId=${message.id})}">See full thread</a>
                     <div>
                         <p th:text="${message.owner.username}"></p>
                         <p th:text="${message.createdAt.toString()}"></p>
