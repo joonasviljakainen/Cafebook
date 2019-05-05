@@ -31,20 +31,20 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 public class Image extends AbstractPersistable<Long> {
     
     @ManyToOne
-    public Account owner;
-    public String description;
-    public LocalDateTime creationDateTime;
+    private Account owner;
+    private String description;
+    private LocalDateTime creationDateTime;
     
-    public Boolean isProfilePicture;
+    private Boolean isProfilePicture;
     
     @OneToMany
-    public List<Comment> comments;
+    private List<Comment> comments;
     
     @ManyToMany
-    public List<Account> likers;
+    private List<Account> likers;
     
     //@Lob
     //@Basic(fetch = FetchType.LAZY)
     @Type(type="org.hibernate.type.BinaryType")
-    public byte[] bytes;
+    private byte[] bytes;
 }
