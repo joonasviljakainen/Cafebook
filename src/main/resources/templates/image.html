@@ -19,6 +19,21 @@ and open the template in the editor.
             <div class="col-8">
                 <img style="height: 500px" th:src="@{/images/{id}(id=${image.id})}" />
                 <p th:text="${image.description}"></p>
+                
+                <div>
+                        <p><span th:text="${#lists.size(image.likers)}"> </span> L's</p>
+                        <div th:if="${isFriend}">
+                            <p th:if="${#lists.contains(image.likers, currentlyLoggedInUser)}"><bold>LIKED BY YOU</bold></p>
+                            <div th:unless="${#lists.contains(image.likers, currentlyLoggedInUser)}">
+                                <div th:each="liker : ${image.likers}">
+                                    <span th:text="${liker.username}"></span>
+                                </div>
+                                <form th:action="@{/images/{imageId}/likes(imageId=${image.id})}" method="POST">
+                                    <button type="submit">Like this</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
             </div>
         </div>
         

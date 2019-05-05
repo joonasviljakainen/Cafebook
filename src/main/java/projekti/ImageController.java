@@ -68,6 +68,8 @@ public class ImageController {
         Account acc = accountRepository.findByUsername(auth.getName());
         
         model.addAttribute("isFriend", (img.getOwner().equals(acc) || img.getOwner().getFriends().contains(acc)));
+        model.addAttribute("currentlyLoggedInUser", acc);
+        model.addAttribute("profile", img.getOwner());
         return "image";
     }
     
@@ -97,7 +99,6 @@ public class ImageController {
             
             return "redirect:/views/images/" + id;
         }
-
         return "redirect:/login";
     }
 
@@ -125,5 +126,27 @@ public class ImageController {
         }
         imageRepository.save(i);
         return "redirect:/";
+    }
+    
+    @Secured("USER")
+    @PostMapping("/images/{imageId}/likes")
+    public String likeImage(@PathVariable Long imageId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        Account liker = accountRepository.findByUsername(username);
+        
+        if (liker == null) return "403";
+        Image i = imageRepository.getOne(imageId);
+        if (i == null) return "404";
+        
+        if (liker.getLikedImages().contains(i)) return "redirect:/views/images/" + imageId;
+        
+        liker.getLikedImages().add(i);
+        i.getLikers().add(liker);
+        accountRepository.save(liker);
+        imageRepository.save(i);
+        
+        return "redirect:/views/images/" + imageId;
+        
     }
 }
