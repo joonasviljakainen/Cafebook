@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -63,7 +66,8 @@ public class ImageController {
         Image img = imageRepository.getOne(id);
         if (img == null) return "404";
         model.addAttribute("image", img);
-        model.addAttribute("comments", commentRepository.findByImage(img));
+        Pageable pageable = (Pageable) PageRequest.of(0, 10, Sort.by("commentTime").descending());
+        model.addAttribute("comments", commentRepository.findByImage(img, pageable));
         
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Account acc = accountRepository.findByUsername(auth.getName());

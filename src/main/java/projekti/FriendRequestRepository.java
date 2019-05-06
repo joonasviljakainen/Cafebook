@@ -6,6 +6,7 @@
 package projekti;
 
 import java.util.List;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -13,6 +14,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author joonas
  */
 public interface FriendRequestRepository extends JpaRepository<FriendRequest, Long> {
+    
+    @EntityGraph(attributePaths={"target"})
     public List<FriendRequest> findByMaker(Account maker);
+    @EntityGraph(attributePaths={"maker"})
     public List<FriendRequest> findByTarget(Account target);
 }
