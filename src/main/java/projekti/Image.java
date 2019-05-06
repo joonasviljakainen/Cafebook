@@ -44,8 +44,8 @@ public class Image extends AbstractPersistable<Long> {
     @ManyToMany
     private List<Account> likers;
     
-    @Lob
-    @Basic(fetch = FetchType.LAZY)
+    //@Lob
+    //@Basic(fetch = FetchType.LAZY)
     //@Column(name="img")
     @Type(type="org.hibernate.type.BinaryType")
     private byte[] bytes;
