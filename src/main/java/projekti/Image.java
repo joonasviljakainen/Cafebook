@@ -25,7 +25,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
  *
  * @author joonas
  */
-@Entity
+@Entity(name="pic")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
